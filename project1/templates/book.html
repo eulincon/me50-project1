@@ -1,0 +1,102 @@
+{% extends "layout_dash.html" %}
+
+{% block body %}
+  <style type="text/css">
+    .rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+    }
+    .rate:not(:checked) > input {
+        position:absolute;
+        top:-9999px;
+    }
+    .rate:not(:checked) > label {
+        float:right;
+        width:1em;
+        overflow:hidden;
+        white-space:nowrap;
+        cursor:pointer;
+        font-size:30px;
+        color:#ccc;
+    }
+    .rate:not(:checked) > label:before {
+        content: '★ ';
+    }
+    .rate > input:checked ~ label {
+        color: #ffc700;    
+    }
+    .rate:not(:checked) > label:hover,
+    .rate:not(:checked) > label:hover ~ label {
+        color: #deb217;  
+    }
+    .rate > input:checked + label:hover,
+    .rate > input:checked + label:hover ~ label,
+    .rate > input:checked ~ label:hover,
+    .rate > input:checked ~ label:hover ~ label,
+    .rate > label:hover ~ input:checked ~ label {
+        color: #c59b08;
+    }
+  </style>
+  <div class="m-auto container row">
+    <div class="col-4">
+      <div class="card shadow-lg">
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-action"><strong>Title:</strong> {{book.title}}</li>
+            <li class="list-group-item list-group-item-action"><strong>Author:</strong> {{book.author}}</li>
+            <li class="list-group-item list-group-item-action"><strong>Publication Year:</strong> {{book.year}}</li>
+            <li class="list-group-item list-group-item-action"><strong>ISBN:</strong> {{book.isbn}}</li>
+            <li class="list-group-item list-group-item-action"><strong>Average Rating:</strong> {{res[0]}}</li>
+            <li class="list-group-item list-group-item-action"><strong>Total Ratings:</strong> {{res[1]}}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card mt-3">
+        <div class="card-header text-center fonte">
+          Give your review
+        </div>
+        {% if commented %}
+          <span class="fonte text-center mb-3 mt-3">You already give your review!</span>
+        {% else %}
+        <div class="card-body">
+          <form action="/register_review?id={{book.id}}" method="POST">
+            <label class="fonte mb-auto">Rate:</label>
+            <div class="row">
+              <div class="rate">
+              <input type="radio" id="star5" name="rate" value="5" />
+              <label for="star5" title="text">5 stars</label>
+              <input type="radio" id="star4" name="rate" value="4" />
+              <label for="star4" title="text">4 stars</label>
+              <input type="radio" id="star3" name="rate" value="3" />
+              <label for="star3" title="text">3 stars</label>
+              <input type="radio" id="star2" name="rate" value="2" />
+              <label for="star2" title="text">2 stars</label>
+              <input type="radio" id="star1" name="rate" value="1" />
+              <label for="star1" title="text">1 star</label>
+            </div>
+            </div>
+            <div class="form-group">
+              <label for="myreview" class="fonte">Comment:</label>
+              <textarea id="myreview" name="myreview" class="form-control"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send</button>
+          </form>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="card shadow-lg">
+        <div class="card-body">
+          <h3 class="text-center">Reviews</h3>
+          <ul class="list-group">
+            {% for comment in comments %}
+            <li class="list-group-item list-group-item-action"><strong>{{comment.username}}:</strong> {{comment.comment}}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>    
+  </div>
+{% endblock body%}

@@ -1,0 +1,46 @@
+{% extends "layout_dash.html" %}
+
+{% block body %}
+<div class="container bg-light shadow-lg mb-5">
+	<form class="row p-3" action="{{url_for('search_book')}}" method="post">
+		<div class="form-group col-4 fonte">
+			<label for="isbn">ISBN:</label>
+			<input type="text" id="isbn" name="isbn" class="shadow-lg form-control">
+		</div>
+		<div class="form-group col-4 fonte">
+			<label for="title">Title:</label>
+			<input type="text" name="title" id="title" class="shadow-lg form-control">
+		</div>
+		<div class="form-group col-4 fonte">
+			<label for="author">Author:</label>
+			<input type="text" name="author" id="author" class="shadow-lg form-control">
+		</div>
+		<button class="btn btn-primary ml-auto mr-3">Search</button>
+	</form>
+</div>
+
+<div class="container bg-light p-5 shadow-lg">
+	<table class="table table-striped table-dark shadow-lg">
+	  <thead>
+	    <tr>
+	      <th scope="col">#</th>
+	      <th scope="col">ISBN</th>
+	      <th scope="col">Title</th>
+	      <th scope="col">Author</th>
+	      <th scope="col">See</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  	{% for book in books %}
+	    <tr>
+	      <th scope="row">1</th>
+	      <td>{{book.isbn}}</td>
+	      <td>{{book.title}}</td>
+	      <td>{{book.author}}</td>
+	      <td><a href="/book?id={{book.id}}">See</a></td>
+	    </tr>
+	    {% endfor %}
+	  </tbody>
+	</table>
+</div>
+{% endblock %}

@@ -8,7 +8,7 @@ engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
 def main():
-    f = open("books.csv")
+    f = open("books2.csv")
     print(csv.Sniffer().has_header(f.read(5000)))
     f.seek(1)
     reader = csv.reader(f)
