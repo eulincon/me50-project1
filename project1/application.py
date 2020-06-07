@@ -77,7 +77,7 @@ def book():
 	if db.execute('SELECT id FROM tb_reviews WHERE id_user = :id_user AND id_book = :id_book',
 		{'id_user': a.id, 'id_book': book.id}).rowcount != 0:
 		commented = True
-	comments = db.execute("SELECT username, comment FROM tb_reviews JOIN tb_users ON tb_reviews.id_user = tb_users.id WHERE tb_reviews.id_book = :id_book",
+	comments = db.execute("SELECT username, comment, rate FROM tb_reviews JOIN tb_users ON tb_reviews.id_user = tb_users.id WHERE tb_reviews.id_book = :id_book",
 		{"id_book": id})
 	try:
 		res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "AeSZgRuuQa1FEGSr2AIfmA", "isbns": book.isbn})
