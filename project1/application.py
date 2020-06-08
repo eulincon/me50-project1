@@ -1,7 +1,7 @@
 import os
 import requests
 
-from flask import Flask, session, render_template, request, redirect, url_for
+from flask import Flask, session, render_template, request, redirect, url_for, jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -115,13 +115,36 @@ def register_review():
 	db.execute('INSERT INTO tb_reviews (id_user, id_book, comment, rate) VALUES (:id_user, :id_book, :comment, :rate)',
 		{'id_user': user.id, 'id_book': id_book, 'comment': comment, 'rate': rate})
 	db.commit()
-	#book = db.execute("SELECT id, isbn, title, author, year FROM tb_books WHERE id = :id",
-	#	{"id": id_book}).fetchone()
-	#comments = db.execute("SELECT username, comment FROM tb_reviews JOIN tb_users ON tb_reviews.id_user = tb_users.id WHERE tb_reviews.id_book = :id_book",
-	#	{"id_book": id_book})
-	#res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "AeSZgRuuQa1FEGSr2AIfmA", "isbns": book.isbn})
-	#res = res.json()
-	#lista.append(res["books"][0]["average_rating"])
-	#lista.append(res["books"][0]["ratings_count"])
-	#return render_template('/book.html', book=book, res=lista, user=session['user'], commented=True, comments=comments)
 	return redirect(url_for('book', id=id_book))
+
+@app.route("/api/<string:isbn>")
+def book_api(isbn):
+	book = db.execute("SELECT isbn, id, title, author, year FROM tb_books WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
+	if book is None:
+		return jsonify({
+			"error": "invalid ISBN book",
+			"number_error": "404"
+			})
+
+	review_count = db.execute("SELECT COUNT(*) FROM tb_reviews WHERE id_book = :id_book", {"id_book": book.id}).fetchone()
+	average_acore = db.execute("SELECT AVG(rate) FROM tb_reviews WHERE id_book = :id_book", {"id_book": book.id}).fetchone()
+
+	if average_acore.avg == None:
+		return jsonify({
+			"isbn": book.isbn,
+			"title": book.title,
+			"author": book.author,
+			"year": book.year,
+			"review_count": str(review_count[0]),
+			"average_acore": 'No score'
+		})
+
+	return jsonify({
+			"isbn": book.isbn,
+			"title": book.title,
+			"author": book.author,
+			"year": book.year,
+			"review_count": str(review_count[0]),
+			"average_acore": str(format(average_acore.avg, '.1f'))
+		})
+	
