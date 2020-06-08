@@ -20,7 +20,7 @@
 </div>
 
 <div class="container bg-light p-5 shadow-lg">
-	<table class="table table-striped table-dark shadow-lg">
+	<table class="table table-striped table-dark shadow-lg table-hover">
 	  <thead>
 	    <tr>
 	      <th scope="col">#</th>
@@ -31,15 +31,19 @@
 	    </tr>
 	  </thead>
 	  <tbody>
-	  	{% for book in books %}
-	    <tr>
-	      <th scope="row">1</th>
-	      <td>{{book.isbn}}</td>
-	      <td>{{book.title}}</td>
-	      <td>{{book.author}}</td>
-	      <td><a href="/book?id={{book.id}}">See</a></td>
-	    </tr>
-	    {% endfor %}
+	  	{% if books  %}
+		  	{% for book in books %}
+		    <tr>
+		      <th scope="row">1</th>
+		      <td>{{book.isbn}}</td>
+		      <td>{{book.title}}</td>
+		      <td>{{book.author}}</td>
+		      <td><a href="/book?id={{book.id}}">See</a></td>
+		    </tr>
+		    {% endfor %}
+	  	{% else %}
+	  		<td scope="row" colspan="5" class="text-center text-danger bg-light fonte">No Match</td>
+	  	{% endif %}
 	  </tbody>
 	</table>
 </div>
