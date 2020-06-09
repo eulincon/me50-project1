@@ -22,3 +22,12 @@ The first line of books.csv has been removed to import the data as the first lin
 considering in the import.py file that the table already exists in the database.
 
 In book.html and register.html a JQuery Validation Plugin was used to validate the form data preventing the user from entering a username with space.
+
+
+db{
+	host: ec2-52-202-146-43.compute-1.amazonaws.com
+	database: dd5p7nll6b9cl
+	user: qbkjeniegjvgtu
+	password: 758c111dfd887d8c601d93a3d3fb854ec35412ef2605fde7a67b8741f4a428cc
+	uri: postgres://qbkjeniegjvgtu:758c111dfd887d8c601d93a3d3fb854ec35412ef2605fde7a67b8741f4a428cc@ec2-52-202-146-43.compute-1.amazonaws.com:5432/dd5p7nll6b9cl
+}
