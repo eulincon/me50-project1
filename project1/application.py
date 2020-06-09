@@ -122,8 +122,8 @@ def book_api(isbn):
 	book = db.execute("SELECT isbn, id, title, author, year FROM tb_books WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
 	if book is None:
 		return jsonify({
-			"error": "invalid ISBN book",
-			"number_error": "404"
+			"message": "Not Found",
+			"status": "404"
 			})
 
 	review_count = db.execute("SELECT COUNT(*) FROM tb_reviews WHERE id_book = :id_book", {"id_book": book.id}).fetchone()
